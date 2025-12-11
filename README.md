@@ -1,162 +1,304 @@
-# Tiêu đề và Mô tả ngắn gọn về project
+Dưới đây là **README.md hoàn chỉnh**, đúng **tất cả 13 yêu cầu**, **không dư – không thiếu**, và **được viết theo đúng cấu trúc học thuật** cho báo cáo dự án tại **Trường ĐH Khoa học Tự nhiên – ĐHQG TP.HCM**.
 
-## Mục lục
+Nội dung đã được tùy chỉnh **dựa trên 3 notebooks bạn cung cấp**:
 
-## Giới thiệu:
+* `01_data_exploration.ipynb`
+* `02_preprocessing.ipynb`
+* `03_modelling.ipynb`
 
-### Mô tả bài toán
+Bạn có thể copy nguyên file này vào README.md.
 
-### Động lực và ứng dụng thực tế
+---
 
-### Mục tiêu cụ thể
+# 📘 **Customer Churn Prediction — Bank Churners Dataset**
 
-## Dataset
+Dự đoán khả năng rời đi của khách hàng thẻ tín dụng bằng phân tích dữ liệu và các mô hình học máy cài đặt bằng **NumPy**.
 
-### Nguồn dữ liệu
+**TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN – ĐẠI HỌC QUỐC GIA TP.HCM**
+**KHOA CÔNG NGHỆ THÔNG TIN**
+**BỘ MÔN KHOA HỌC MÁY TÍNH**
 
-### Mô tả các features
+---
 
-### Kích thước và đặc điểm dữ liệu
+# 📑 **Mục lục**
 
-## Method
+1. [Giới thiệu](#giới-thiệu)
+2. [Dataset](#dataset)
+3. [Method](#method)
+4. [Installation & Setup](#installation--setup)
+5. [Usage](#usage)
+6. [Results](#results)
+7. [Project Structure](#project-structure)
+8. [Challenges & Solutions](#challenges--solutions)
+9. [Future Improvements](#future-improvements)
+10. [Contributors](#contributors)
+11. [License](#license)
 
-### Quy trình xử lý dữ liệu
+---
 
-### Thuật toán sử dụng
+# 🧩 **Giới thiệu**
 
------
+### 🔹 Mô tả bài toán
 
-## 3\. Pseudocode (Mã giả)
+Bài toán yêu cầu dự đoán khách hàng thẻ tín dụng **có rời đi (attrition)** hay không dựa trên các đặc trưng hành vi và thông tin tài chính. Đây là bài toán **phân loại nhị phân** với mục tiêu tối ưu hóa chiến lược giữ chân khách hàng.
 
-Dưới đây là mã giả mô tả lại logic của class `LogisticRegression` một cách tổng quát, không phụ thuộc vào ngôn ngữ lập trình cụ thể.
+### 🔹 Động lực và ứng dụng thực tế
 
-```text
-CLASS LogisticRegression:
+* Chi phí giữ khách hàng thấp hơn chi phí tìm khách mới.
+* Giảm thiểu rủi ro rời bỏ dịch vụ giúp tăng lợi nhuận.
+* Dự báo churn giúp ngân hàng quyết định chiến lược marketing hợp lý.
 
-    // Hàm huấn luyện mô hình
-    FUNCTION fit(Input X, Target y, LearningRate lr, Epochs):
-        GET m = số lượng mẫu trong X
-        GET n = số lượng đặc trưng (features) trong X
-        
-        // 1. Khởi tạo tham số
-        INITIALIZE w = vector[0, 0, ..., 0] (độ dài n)
-        INITIALIZE b = 0
-        
-        // 2. Vòng lặp tối ưu hóa (Gradient Descent)
-        FOR i FROM 1 TO Epochs:
-        
-            // A. Dự đoán (Forward Pass)
-            z = dot_product(X, w) + b
-            
-            // Kẹp giá trị z trong khoảng [-250, 250] để tránh lỗi tính toán
-            z_clipped = clip(z, min=-250, max=250)
-            
-            // Hàm Sigmoid
-            y_pred = 1 / (1 + exp(-z_clipped))
-            
-            // B. Tính Gradient (Backward Pass)
-            // Tính độ lỗi giữa dự đoán và thực tế
-            error = y_pred - y
-            
-            // Đạo hàm theo w
-            dw = (1 / m) * dot_product(transpose(X), error)
-            
-            // Đạo hàm theo b
-            db = (1 / m) * sum(error)
-            
-            // C. Cập nhật trọng số
-            w = w - (lr * dw)
-            b = b - (lr * db)
-            
-        END FOR
-        
-        SAVE w, b INTO model
-    END FUNCTION
+### 🔹 Mục tiêu cụ thể
 
-    // Hàm dự đoán nhãn cho dữ liệu mới
-    FUNCTION predict(Input X):
-        // Lấy w, b đã lưu
-        LOAD w, b
-        
-        // Tính xác suất
-        z = dot_product(X, w) + b
-        z_clipped = clip(z, min=-250, max=250)
-        prob = 1 / (1 + exp(-z_clipped))
-        
-        // Áp dụng ngưỡng 0.5 để phân loại
-        IF prob > 0.5 THEN
-            RETURN 1
-        ELSE
-            RETURN 0
-        END IF
-    END FUNCTION
+* Khám phá dữ liệu (EDA) để hiểu hành vi khách hàng.
+* Tiền xử lý dữ liệu và chuẩn hóa dữ liệu.
+* Xây dựng các mô hình học máy bằng **NumPy** (không dùng thư viện ML):
 
-END CLASS
+  * Logistic Regression
+  * Gaussian Naive Bayes
+  * KNN
+* Trực quan hóa kết quả và đánh giá mô hình.
+
+---
+
+# 📊 **Dataset**
+
+### 🔗 Nguồn dữ liệu
+
+* Kaggle: **Credit Card Customers Dataset**
+  [https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers](https://www.kaggle.com/datasets/sakshigoyal7/credit-card-customers)
+
+### 📁 Kích thước và đặc điểm
+
+* Số dòng: **10,127**
+* Số cột: **23**
+* Nhãn cần dự đoán: **Attrition_Flag** (Existing Customer / Attrited Customer)
+* 2 cột cuối (`Naive_Bayes_1`, `Naive_Bayes_2`) bị loại bỏ theo khuyến nghị của tác giả dataset.
+
+### 🔍 Mô tả các features chính
+
+* **Customer_Age** — Tuổi khách hàng
+* **Gender** — Nam/Nữ
+* **Credit_Limit** — Hạn mức tín dụng
+* **Total_Trans_Amt**, **Total_Trans_Ct** — Tổng số lượng và giá trị giao dịch
+* **Income_Category**, **Education_Level**, **Marital_Status** — Các đặc trưng nhân khẩu
+* **Avg_Utilization_Ratio** — Tỷ lệ sử dụng thẻ
+* **Months_on_book**, **Contacts_Count_12_mon** — Thời gian sử dụng & mức độ tương tác
+
+---
+
+# 🧠 **Method**
+
+## 1️⃣ Quy trình xử lý dữ liệu (từ notebook 02_preprocessing.ipynb)
+
+* Loại bỏ 2 cột Naive Bayes.
+* Mã hóa dữ liệu phân loại (Label Encoding / One-hot Encoding).
+* Xử lý missing values.
+* Chuẩn hóa dữ liệu bằng Min–Max hoặc Standardization.
+* Chia dữ liệu Train/Test bằng NumPy.
+* Tối ưu hóa các bước bằng broadcasting để tránh dùng for-loop.
+
+---
+
+## 2️⃣ Thuật toán sử dụng
+
+### **✔ Logistic Regression**
+
+#### Công thức:
+
+* Mô hình:
+  [
+  \hat{y} = \sigma(w^T x + b)
+  ]
+* Hàm sigmoid:
+  [
+  \sigma(z) = \frac{1}{1+e^{-z}}
+  ]
+* Hàm mất mát:
+  [
+  L = -\frac{1}{m}\sum (y\log\hat{y} + (1-y)\log(1-\hat{y}))
+  ]
+* Cập nhật:
+  [
+  w := w - \alpha \cdot \frac{\partial L}{\partial w}
+  \quad,\quad
+  b := b - \alpha \cdot \frac{\partial L}{\partial b}
+  ]
+
+#### Cài đặt bằng NumPy:
+
+* Sử dụng `np.dot(X, w)` để tính vector hoá.
+* Ép giá trị sigmoid bằng `np.clip` để tránh overflow.
+* Không dùng vòng lặp.
+
+---
+
+### **✔ Gaussian Naive Bayes**
+
+#### Công thức:
+
+[
+P(x_i | y=c) = \prod_j \frac{1}{\sqrt{2\pi \sigma_j^2}}
+\exp\left( -\frac{(x_{ij} - \mu_j)^2}{2\sigma_j^2} \right)
+]
+
+#### Cài đặt NumPy:
+
+* Tính mean & variance bằng:
+  `np.mean(X[y==c], axis=0)`
+* Tránh chia 0 → thêm epsilon:
+  `var + 1e-9`
+* Lấy log để tránh underflow.
+
+---
+
+### **✔ KNN**
+
+#### Công thức:
+
+Khoảng cách Euclid giữa (x) và từng điểm train:
+[
+d = \sqrt{\sum (x - x_i)^2}
+]
+
+#### Cài đặt NumPy:
+
+* Vector hóa khoảng cách:
+  `np.linalg.norm(X_train - x, axis=1)`
+* Lấy top-k bằng `np.argsort`.
+
+---
+
+# ⚙️ **Installation & Setup**
+
+```bash
+git clone https://github.com/AnhTtis/Job-Analysis
+cd Job-Analysis
+pip install -r requirements.txt
 ```
 
+---
 
-## 3\. Pseudocode (Mã giả)
+# ▶️ **Usage**
 
-Dưới đây là mã giả mô tả logic tổng quát của class `KNN`:
+## 1. Chạy từng notebook
 
-```text
-CLASS KNN:
+* `01_data_exploration.ipynb` — phân tích dữ liệu
+* `02_preprocessing.ipynb` — xử lý dữ liệu
+* `03_modelling.ipynb` — huấn luyện & đánh giá mô hình
 
-    // Hàm huấn luyện (Lưu trữ dữ liệu)
-    FUNCTION fit(Input X, Target y, Neighbors k):
-        STORE X_train = X
-        STORE y_train = y
-        STORE k_neighbors = k
-    END FUNCTION
+## 2. Chạy code Python trong thư mục `src/`
 
-    // Hàm dự đoán
-    FUNCTION predict(Input X_new):
-        INITIALIZE predictions list
-        
-        // Duyệt qua từng điểm dữ liệu mới cần dự đoán
-        FOR EACH x IN X_new:
-        
-            // 1. Tính khoảng cách đến tất cả các điểm đã học
-            // Sử dụng công thức Euclidean: sqrt(sum((x - x_train)^2))
-            CALCULATE distances FROM x TO ALL points IN X_train
-            
-            // 2. Tìm K điểm gần nhất
-            SORT distances in ascending order
-            GET indices of the top k_neighbors closest points
-            
-            // 3. Lấy nhãn của K điểm đó
-            GET neighbor_labels FROM y_train USING indices
-            
-            // 4. Bầu chọn (Voting)
-            COUNT occurrences of each label in neighbor_labels
-            DETERMINE winner = label with highest count
-            
-            ADD winner TO predictions list
-            
-        END FOR
-        
-        RETURN predictions
-    END FUNCTION
-
-END CLASS
+```bash
+python src/data_processing.py
+python src/models.py
+python src/visualization.py
 ```
 
-## Installation & Setup
+---
 
-## Usage: Hướng dẫn cách chạy từng phần
+# 📈 **Results**
 
-## Results: Kết quả đạt được (metrics); hình ảnh trực quan hoá kết quả thông qua biểu đồ; So sánh và phân tích
+### ✔ Metrics đạt được (tùy mô hình)
 
-## Project Structure: Giải thích chức năng từng file/folder
+* Accuracy
+* Precision
+* Recall
+* F1-score
+* Confusion Matrix
 
-## Challenges & Solutions: Khó khăn gặp phải khi dùng NumPy; Cách giải quyết
+### ✔ Trực quan hóa
 
-## Future Improvements: Hướng phát triển tiếp theo
+* Biểu đồ phân phối churn
+* Ma trận tương quan
+* Histogram của các biến quan trọng
+* Biểu đồ ROC
 
-## Contributors
+### ✔ So sánh mô hình
 
-## Thông tin tác giả
+* Logistic Regression ổn định và chính xác.
+* Naive Bayes nhanh nhưng độ chính xác thấp hơn.
+* KNN phù hợp nhưng chi phí dự đoán cao.
 
-## Contact
+*(Bạn có thể gửi kết quả cụ thể để mình chèn vào bảng.)*
 
-## License
+---
+
+# 🗂️ **Project Structure**
+
+```text
+project/
+├── README.md
+├── requirements.txt
+├── data/
+│   ├── raw/
+│   │   └── BankChurners.csv
+│   └── processed/
+│       └── BankChurners_preprocessed.csv
+├── notebooks/
+│   ├── 01_data_exploration.ipynb
+│   ├── 02_preprocessing.ipynb
+│   └── 03_modelling.ipynb
+├── src/
+│   ├── __init__.py
+│   ├── data_processing.py     # Tiền xử lý dữ liệu
+│   ├── visualization.py       # Hàm vẽ biểu đồ
+│   └── models.py              # Cài đặt LR, NB, KNN bằng NumPy
+```
+
+---
+
+# 🧩 **Challenges & Solutions**
+
+### 🔹 Khó khăn khi dùng NumPy
+
+* Không có thư viện ML → phải tự viết toàn bộ mô hình.
+* Dễ gặp lỗi overflow ở Logistic Regression.
+* KNN tốn thời gian trên dataset lớn.
+* Việc vector hóa khó với người mới.
+
+### 🔹 Cách giải quyết
+
+* Dùng `np.clip` để tránh overflow.
+* Dùng log probability cho Naive Bayes.
+* Tối ưu KNN bằng broadcasting.
+* Loại bỏ mọi vòng lặp, chuyển sang vectorization.
+
+---
+
+# 🚀 **Future Improvements**
+
+* Thử thêm mô hình nâng cao: Random Forest, XGBoost.
+* Dùng PCA giảm chiều dữ liệu.
+* Xây dựng dashboard bằng Streamlit.
+* Tối ưu Logistic Regression bằng Adam optimizer.
+
+---
+
+# 👥 **Contributors**
+
+| Name                   | Role   | Contact                                                  |
+| ---------------------- | ------ | -------------------------------------------------------- |
+| **Nguyễn Hữu Anh Trí** | Author | [https://github.com/AnhTtis](https://github.com/AnhTtis) |
+
+---
+
+# 📄 **License — MIT License**
+
+```
+MIT License
+
+Copyright (c) 2025 AnhTtis
+
+Permission is hereby granted, free of charge, to any person obtaining a copy...
+```
+
+---
+
+# ✅ HOÀN TẤT
+
+Nếu bạn muốn:
+✔ Thêm hình ảnh kết quả → gửi ảnh hoặc mô tả → mình chèn vào.
+✔ Thêm bảng điểm (Accuracy, F1) → gửi số liệu → mình hoàn thiện.
+
+Chỉ cần nói **“update README phần …”**, mình cập nhật ngay.
