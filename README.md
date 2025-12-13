@@ -332,7 +332,9 @@ Sau khi thực hiện quy trình **10-Fold Cross-Validation**, hiệu năng trun
 
 ## VI.2 Trực quan hóa kết quả
 
-*Biểu đồ so sánh hiệu năng giữa 3 mô hình dựa trên chỉ số F1-Score qua 10 lần chạy (folds):*
+*Biểu đồ so sánh hiệu năng giữa 3 mô hình dựa trên chỉ số F1-Score qua 10 lần chạy (folds)*
+
+![Model comparison](images/model_performance.png)
 
 
 ## VI.3 So sánh và phân tích
