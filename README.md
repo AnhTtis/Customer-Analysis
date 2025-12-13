@@ -6,23 +6,27 @@ Dự đoán khả năng rời đi của khách hàng thẻ tín dụng bằng ph
 
 # **Mục lục**
 
-- [I. Giới thiệu](#giới-thiệu)
-  - [I.1. Mô tả bài toán](#i1--mô-tả-bài-toán)
-  - [I.2 Động lực và ứng dụng thực tế](#ii2-động-lực-và-ứng-dụng-thực-tế)
-  - [I.3 Mục tiêu cụ thể](#ii3-mục-tiêu-cụ-thể)
-- [Dataset](#dataset)
+- [I. Giới thiệu](#i-giới-thiệu)
+  - [I.1 Mô tả bài toán](#i1-mô-tả-bài-toán)
+  - [I.2 Động lực và ứng dụng thực tế](#i2-động-lực-và-ứng-dụng-thực-tế)
+  - [I.3 Mục tiêu cụ thể](#i3-mục-tiêu-cụ-thể)
+- [II. Dataset](#ii-dataset)
   - [II.1 Nguồn dữ liệu](#ii1-nguồn-dữ-liệu)
   - [II.2 Kích thước và đặc điểm](#ii2-kích-thước-và-đặc-điểm)
-  - [II. 3 Mô tả các feature](#ii3-mô-tả-các-features)
-- [Method](#method)
-4. [Installation & Setup](#installation--setup)
-5. [Usage](#usage)
-6. [Results](#results)
-7. [Project Structure](#project-structure)
-8. [Challenges & Solutions](#challenges--solutions)
-9. [Future Improvements](#future-improvements)
-10. [Contributors](#contributors)
-11. [License](#license)
+  - [II.3 Mô tả các feature](#ii3-mô-tả-các-features)
+- [III. Method](#iii-method)
+  - [III.1 Quy trình Khám phá dữ liệu](#iii1-quy-trình-khám-phá-dữ-liệu)
+  - [III.2 Quy trình Xử lý dữ liệu](#iii2-quy-trình-xử-lý-dữ-liệu)
+  - [III.3 Quy trình Xây dựng model](#iii3-quy-trình-xây-dựng-model)
+  - [III.4 Chiến lược Đánh giá & Kiểm thử](#iii4-chiến-lược-đánh-giá--kiểm-thử-mô-hình)
+- [IV. Installation & Setup](#iv-installation--setup)
+- [V. Usage](#v-usage)
+- [VI. Results](#vi-results)
+- [VII. Project Structure](#vii-project-structure)
+- [VIII. Challenges & Solutions](#viii-challenges--solutions)
+- [IX. Future Improvements](#ix-future-improvements)
+- [X. Contributors](#x-contributors)
+- [XI. License](#-license--mit-license)
 
 ---
 
@@ -252,23 +256,23 @@ Thay vì tối ưu hóa hàm mất mát, mô hình "học" bằng cách tính to
 Dưới đây là phần tóm tắt ngắn gọn, súc tích nhưng bao hàm đầy đủ các ý tưởng kỹ thuật quan trọng bạn đã cung cấp, được định dạng chuẩn để đưa vào mục III.4 của README:
 
 
-### III.3.4 Chiến lược Đánh giá & Kiểm thử Mô hình
+## III.4 Chiến lược đánh giá & kiểm thử Mô hình
 
 Để đảm bảo kết quả đánh giá khách quan và tối ưu hóa hiệu năng mô hình, quy trình kiểm thử được xây dựng chặt chẽ thông qua 3 thành phần chính:
 
-#### III.3.4.1 Kỹ thuật K-Fold Cross-Validation
+* **Kỹ thuật K-Fold Cross-Validation**
 Thay vì chỉ chia dữ liệu một lần (Train/Test split truyền thống), ta áp dụng **K-Fold** để giảm thiểu phương sai và đánh giá độ ổn định của mô hình:
 1.  **Xáo trộn (Shuffle):** Đảm bảo tính ngẫu nhiên, phá vỡ thứ tự sắp xếp gốc của dữ liệu.
 2.  **Chia & Xoay vòng:** Dữ liệu được chia thành $k$ phần. Quy trình lặp $k$ lần, mỗi lần chọn một phần làm tập Test (Validation) và phần còn lại làm tập Train.
 3.  **Lợi ích:** Đảm bảo 100% dữ liệu đều được kiểm thử và mô hình không bị "học vẹt" (overfitting) trên một tập mẫu cụ thể.
 
-#### III.4.2 Quy trình vận hành (`evaluate_models`)
+* **Quy trình vận hành (`evaluate_models`)**
 Hàm quản lý luồng đánh giá tuân thủ nghiêm ngặt nguyên tắc **chống rò rỉ dữ liệu (Data Leakage Prevention)**:
 * **Bước 1 - Tách dữ liệu:** Tại mỗi vòng lặp K-Fold, dữ liệu được chia thành `Train_fold` và `Test_fold`.
 * **Bước 2 - Xử lý mất cân bằng:** Hàm `oversample_minority` **CHỈ được áp dụng trên `Train_fold`**. Tập `Test_fold` được giữ nguyên bản để phản ánh đúng thực tế.
 * **Bước 3 - Tổng hợp:** Kết quả của $k$ lần chạy được tính trung bình (`np.mean`) để đưa ra con số hiệu năng cuối cùng đáng tin cậy nhất.
 
-#### III.3.4.3 Các chỉ số đánh giá (Metrics)
+* **Các chỉ số đánh giá (Metrics)**
 Dựa trên **Ma trận nhầm lẫn (Confusion Matrix)** với các yếu tố TP (Dương tính thật), FP (Dương tính giả) và FN (Âm tính giả), hiệu năng mô hình được đo lường qua:
 
 * **Precision (Độ chính xác dự báo dương):** Tỉ lệ dự đoán đúng trong các trường hợp mô hình báo là Positive.
@@ -278,108 +282,148 @@ Dựa trên **Ma trận nhầm lẫn (Confusion Matrix)** với các yếu tố 
 * **F1-Score:** Trung bình điều hòa giữa Precision và Recall, là chỉ số quan trọng nhất để đánh giá sự cân bằng của mô hình trên dữ liệu lệch.
     $$F1 = 2 \times \frac{P \times R}{P + R}$$
 
-# **Installation & Setup**
+# IV. **Installation & Setup**
+
+Để chạy được dự án này, hãy đảm bảo máy tính của bạn đã cài đặt **Python 3.8+** và các thư viện cần thiết.
+
+**1. Clone dự án:**
 
 ```bash
 git clone https://github.com/AnhTtis/Customer-Analysis
 cd Customer-Analysis
+```
+**2. Cài đặt thư viện:**
+
+```bash
 pip install -r requirements.txt
 ```
 
----
+# V. **Usage**
 
-# **Usage**
+Dự án được chia thành 3 giai đoạn chính, tương ứng với 3 file notebooks trong thư mục `notebooks`. Ta cần chạy lần lượt theo thứ tự sau để đảm bảo luồng dữ liệu chính xác:
 
-## Chạy từng notebook
+**Bước 1: Khám phá dữ liệu (EDA)**
 
-* `01_data_exploration.ipynb` — phân tích dữ liệu
-* `02_preprocessing.ipynb` — xử lý dữ liệu
-* `03_modelling.ipynb` — huấn luyện & đánh giá mô hình
----
+  * **File:** `notebooks/01_data_exploration.ipynb`
+  * **Chức năng:** Chạy file này đầu tiên để sinh ra các biểu đồ phân tích, kiểm tra phân phối và hiểu rõ cấu trúc dữ liệu.
 
-# 📈 **Results**
+**Bước 2: Tiền xử lý dữ liệu (Preprocessing)**
 
-### Metrics đạt được (tùy mô hình)
+  * **File:** `notebooks/02_preprocessing.ipynb`
+  * **Chức năng:** Thực hiện làm sạch dữ liệu, mã hóa (Encoding) và chuẩn hóa (Scaling).
+  * **Output:** File này sẽ xuất ra file `data/BankChurners_preprocessed.csv` dùng để train model.
 
-* Accuracy
-* Precision
-* Recall
-* F1-score
-* Confusion Matrix
+**Bước 3: Huấn luyện & Đánh giá mô hình**
 
-### Trực quan hóa
+  * **File:** `notebooks/03_modelling.ipynb`
+  * **Chức năng:** Load dữ liệu đã xử lý, cài đặt thuật toán (Logistic, KNN, GNB), thực hiện Cross-Validation và xuất kết quả đánh giá.
 
-* Biểu đồ phân phối churn
-* Ma trận tương quan
-* Histogram của các biến quan trọng
-* Biểu đồ ROC
+# VI.**Results**
 
-### So sánh mô hình
+## VI.1 Kết quả định lượng (Quantitative Metrics)
 
-* Logistic Regression ổn định và chính xác.
-* Naive Bayes nhanh nhưng độ chính xác thấp hơn.
-* KNN phù hợp nhưng chi phí dự đoán cao.
+Sau khi thực hiện quy trình **10-Fold Cross-Validation**, hiệu năng trung bình của các mô hình được ghi nhận như sau:
 
-*(Bạn có thể gửi kết quả cụ thể để mình chèn vào bảng.)*
+| Mô hình (Model) | Avg F1-Score | Avg Recall | Avg Precision |
+| :--- | :--- | :--- | :--- |
+| **Logistic Regression** | 0.8651 | 0.8024 | **0.9386** |
+| **K-Nearest Neighbors** | **0.8666** | **0.8120** | 0.9294 |
+| **Gaussian Naive Bayes** | 0.8384 | 0.7616 | 0.9328 |
 
----
+## VI.2 Trực quan hóa kết quả
 
-# 🗂️ **Project Structure**
+*Biểu đồ so sánh hiệu năng giữa 3 mô hình dựa trên chỉ số F1-Score qua 10 lần chạy (folds):*
+
+
+## VI.3 So sánh và phân tích
+
+Dựa trên bảng số liệu tổng hợp, ta có những nhận định sau:
+
+**1. Về tổng thể:**
+
+  * **K-Nearest Neighbors (KNN)** là mô hình có hiệu suất tốt nhất với **F1-Score cao nhất (0.8666)** và độ ổn định cao qua các fold.
+  * **Logistic Regression** bám đuổi rất sát sao (F1 \~ 0.8651), cho thấy ranh giới tuyến tính cũng phân loại khá hiệu quả bộ dữ liệu này.
+  * **Gaussian Naive Bayes (GNB)** có hiệu năng thấp nhất trong 3 mô hình (F1 \~ 0.8384).
+
+**2. Về khả năng phát hiện khách hàng rời bỏ (Recall):**
+
+  * Đây là chỉ số quan trọng nhất trong bài toán Churn Prediction (tránh bỏ sót khách hàng sắp rời đi).
+  * **KNN** tiếp tục dẫn đầu với **Recall đạt 81.2%**, nghĩa là mô hình tìm ra được nhiều khách hàng rời bỏ nhất.
+  * **GNB** có Recall thấp nhất (chỉ 76.16%), cho thấy mô hình này bỏ sót một lượng đáng kể khách hàng tiềm năng cần quan tâm.
+
+**3. Về độ tin cậy của dự báo (Precision):**
+
+  * **Logistic Regression** đạt **Precision cao nhất (93.86%)**. Điều này có nghĩa là khi mô hình này dự báo một khách hàng sẽ rời bỏ, tỉ lệ chính xác là rất cao, ít khi báo động giả.
+  * Tuy nhiên, cả 3 mô hình đều có Precision rất cao (\>92%), cho thấy thách thức chính nằm ở việc cải thiện Recall chứ không phải Precision.
+
+**4. Kết luận:**
+
+  * **KNN** là ứng cử viên sáng giá nhất để triển khai thực tế nhờ sự cân bằng tốt giữa việc tìm ra khách hàng (Recall) và độ chính xác (Precision).
+  * Tuy nhiên, nếu cần một mô hình đơn giản, dễ giải thích (Explainable AI) và tốn ít tài nguyên tính toán hơn khi dự báo, **Logistic Regression** là một phương án thay thế rất tốt với hiệu năng gần như tương đương.
+
+
+
+# VII.**Project Structure**
+
+Cấu trúc thư mục của dự án được tổ chức như sau:
 
 ```text
-project/
-├── README.md
-├── requirements.txt
-├── data/
-│   ├── raw/
-│   │   └── BankChurners.csv
-│   └── processed/
-│       └── BankChurners_preprocessed.csv
-|── notebooks/
-    ├── 01_data_exploration.ipynb
-    ├── 02_preprocessing.ipynb
-    └── 03_modelling.ipynb
-
+CUSTOMER-ANALYSIS/
+│
+├── data/                               # Chứa dữ liệu
+│   ├── BankChurners.csv                # Dữ liệu gốc (Raw Data)
+│   └── BankChurners_preprocessed.csv   # Dữ liệu đã qua xử lý (sẵn sàng train)
+│
+├── images/                             # Chứa hình ảnh biểu đồ xuất ra từ Notebook
+│
+├── notebooks/                          # Mã nguồn chính (Source Code)
+│   ├── 01_data_exploration.ipynb       # Phân tích khám phá dữ liệu (EDA)
+│   ├── 02_preprocessing.ipynb          # Xử lý, làm sạch và chuẩn hóa dữ liệu
+│   └── 03_modelling.ipynb              # Xây dựng, huấn luyện và kiểm thử mô hình
+│
+├── HOMEWORK 2_ NUMPY FOR DATA SCI...   # File yêu cầu đề bài
+├── README.md                           # Tài liệu hướng dẫn dự án
+└── requirements.txt                    # Danh sách các thư viện cần cài đặt
 ```
 
----
+# VIII. **Challenges & Solutions**
 
-# 🧩 **Challenges & Solutions**
+Trong quá trình thực hiện dự án, đặc biệt là việc ứng dụng **NumPy** để xây dựng thuật toán từ đầu (from scratch), em đã gặp một số thách thức:
 
-### 🔹 Khó khăn khi dùng NumPy
+**1. Khó khăn về Vector hóa (Vectorization)**
 
-* Không có thư viện ML → phải tự viết toàn bộ mô hình.
-* Dễ gặp lỗi overflow ở Logistic Regression.
-* KNN tốn thời gian trên dataset lớn.
-* Việc vector hóa khó với người mới.
+  * **Vấn đề:** Việc chuyển đổi các công thức toán học phức tạp (như tính khoảng cách Euclidean trong KNN hay Log-likelihood trong Naive Bayes) từ dạng vòng lặp `for` sang dạng tính toán ma trận để tận dụng sức mạnh của NumPy rất trừu tượng và dễ sai sót về chiều (dimensions).
+  * **Giải pháp:** Sử dụng cơ chế **Broadcasting** của NumPy và kiểm tra kỹ kích thước ma trận (`.shape`) sau từng bước tính toán. Sử dụng các hàm `np.expand_dims` hoặc `np.newaxis` để căn chỉnh chiều dữ liệu phù hợp.
 
-### 🔹 Cách giải quyết
+**2. Vấn đề ổn định số học (Numerical Stability)**
 
-* Dùng `np.clip` để tránh overflow.
-* Dùng log probability cho Naive Bayes.
-* Tối ưu KNN bằng broadcasting.
-* Loại bỏ mọi vòng lặp, chuyển sang vectorization.
+  * **Vấn đề:** Trong thuật toán Gaussian Naive Bayes, việc nhân liên tiếp các giá trị xác suất nhỏ dẫn đến lỗi tràn số dưới (underflow), khiến kết quả về 0. Ngoài ra, phương sai bằng 0 gây lỗi chia cho 0.
+  * **Giải pháp:** Chuyển sang tính toán trong không gian **Logarit** (tổng thay vì tích) và cộng thêm một hằng số nhỏ (`epsilon = 1e-9`) vào phương sai để làm mượt (smoothing).
 
----
+**3. Xử lý mất cân bằng dữ liệu**
 
-# 🚀 **Future Improvements**
+  * **Vấn đề:** Dữ liệu lớp `Attrited Customer` quá ít khiến mô hình có xu hướng dự đoán toàn bộ là khách hàng hiện hữu để đạt Accuracy cao ảo.
+  * **Giải pháp:** Tự xây dựng hàm `oversample_minority` sử dụng NumPy để nhân bản ngẫu nhiên lớp thiểu số, kết hợp xáo trộn (`permutation`) để cân bằng lại tập huấn luyện.
 
-* Thử thêm mô hình nâng cao: Random Forest, XGBoost.
-* Dùng PCA giảm chiều dữ liệu.
-* Xây dựng dashboard bằng Streamlit.
-* Tối ưu Logistic Regression bằng Adam optimizer.
+# IX. **Future Improvements**
 
----
+Để dự án hoàn thiện và có tính ứng dụng cao hơn, các hướng phát triển tiếp theo bao gồm:
 
-# 👥 **Contributors**
+1.  **Tối ưu tham số (Hyperparameter Tuning):** Tự xây dựng hàm GridSearch để tìm ra tham số $k$ tối ưu cho KNN hoặc `learning_rate` tốt nhất cho Logistic Regression.
+2.  **Mở rộng thuật toán:** Thử nghiệm các mô hình phi tuyến tính mạnh mẽ hơn như Decision Tree, Random Forest hoặc XGBoost.
+3.  **Triển khai (Deployment):** Xây dựng giao diện web đơn giản bằng Streamlit để người dùng có thể nhập thông tin và nhận dự đoán trực tiếp.
+4.  **Feature Engineering:** Nghiên cứu tạo ra các biến đặc trưng mới (ví dụ: tỉ lệ giao dịch trên thu nhập) để tăng độ chính xác.
 
-| Name                   | Role   | Contact                                                  |
-| ---------------------- | ------ | -------------------------------------------------------- |
-| **Nguyễn Hữu Anh Trí** | Author | [https://github.com/AnhTtis](https://github.com/AnhTtis) |
+# X. **Contributors**
 
----
+Dự án được thực hiện bởi:
 
-# 📄 **License — MIT License**
+  * **Họ và tên:** Nguyễn Hữu Anh Trí
+  * **MSSV:** 23127130
+  * **Email:** nguyenhuuanhtri866@gmail.com
+  * **Trường:** Đại học Khoa học Tự nhiên, ĐHQG-HCM (HCMUS)
+
+# XI. **License — MIT License**
 
 ```
 MIT License
@@ -388,13 +432,3 @@ Copyright (c) 2025 AnhTtis
 
 Permission is hereby granted, free of charge, to any person obtaining a copy...
 ```
-
----
-
-# ✅ HOÀN TẤT
-
-Nếu bạn muốn:
-✔ Thêm hình ảnh kết quả → gửi ảnh hoặc mô tả → mình chèn vào.
-✔ Thêm bảng điểm (Accuracy, F1) → gửi số liệu → mình hoàn thiện.
-
-Chỉ cần nói **“update README phần …”**, mình cập nhật ngay.
