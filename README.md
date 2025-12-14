@@ -292,7 +292,7 @@ Cần đảm bảo máy tính đã cài đặt **Python 3.8+** và các thư vi�
 **1. Clone dự án:**
 
 ```bash
-git clone https://github.com/AnhTtis/Customer-Analysis
+git clone https://github.com/AnhTtis/Customer-Analysis.git
 cd Customer-Analysis
 ```
 **2. Cài đặt thư viện:**
