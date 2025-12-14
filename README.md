@@ -163,6 +163,8 @@ Bộ dữ liệu bao gồm **23 cột** như sau:
 **Định nghĩa:**
 Đây là thuật toán học máy có giám sát (Supervised Learning) có thể được sử dụng cho bài toán phân loại nhị phân (Binary Classification), đưa ra dự đoán dưới dạng xác suất (0 hoặc 1).
 
+---
+
 **Quy trình xây dựng và tối ưu mô hình:**
 
 Quá trình huấn luyện được thực hiện qua các bước lặp (epochs) với cơ chế Gradient Descent:
@@ -203,6 +205,8 @@ Sau khi tối ưu hóa $w$ và $b$, mô hình đưa ra kết quả phân loại 
 **Định nghĩa:**
 Đây là thuật toán thuộc nhóm **Học lười (Lazy Learning)** và **Phi tham số (Non-parametric)** dùng cho bài toán phân loại. Khác với các mô hình học máy thông thường, KNN không huấn luyện để tìm ra bộ trọng số cố định mà trực tiếp ghi nhớ toàn bộ dữ liệu. Quyết định phân loại dựa trên sự tương đồng giữa dữ liệu mới và dữ liệu đã biết.
 
+---
+
 **Quy trình xây dựng mô hình:**
 
 **1. Ghi nhớ dữ liệu (Training Phase)**
@@ -230,10 +234,12 @@ Khi tiếp nhận dữ liệu đầu vào mới, thuật toán thực hiện chu
 
 ### III.3.3 Thuật toán Gaussian Naive Bayes
 
-* **Định nghĩa**
+**Định nghĩa**
 Đây là thuật toán phân loại dựa trên **Định lý Bayes** với giả định rằng các đặc trưng (features) độc lập với nhau và tuân theo phân phối chuẩn (Gaussian distribution).
 
-* **Quy trình xây dựng mô hình**
+---
+
+**Quy trình xây dựng mô hình**
 
 **1. Huấn luyện (Training Phase - Thống kê dữ liệu)**
 Thay vì tối ưu hóa hàm mất mát, mô hình "học" bằng cách tính toán trực tiếp các tham số thống kê cho từng lớp dữ liệu:
@@ -314,6 +320,9 @@ Dự án được chia thành 3 giai đoạn chính, tương ứng với 3 file 
 
   * **File:** `notebooks/03_modelling.ipynb`
   * **Chức năng:** Load dữ liệu đã xử lý, cài đặt thuật toán (Logistic, KNN, GNB), thực hiện Cross-Validation và xuất kết quả đánh giá.
+  * **Điều chỉnh:** Ở cell cuối cùng có thể điều chỉnh được hai thông số quan trọng:
+    1. `k_fold`: Số lượng fold chia ra cho kỹ thuật K-fold.
+    2. `k_predict`: Số lượng lấy các phần tử gần nhau trong thuật toán KNN.
 
 # VI.**Results**
 
@@ -329,7 +338,7 @@ Sau khi thực hiện quy trình **10-Fold Cross-Validation**, hiệu năng trun
 
 ## VI.2 Trực quan hóa kết quả
 
-*Biểu đồ so sánh hiệu năng giữa 3 mô hình dựa trên chỉ số F1-Score qua 10 lần chạy (folds)*
+*Biểu đồ so sánh hiệu năng giữa 3 mô hình dựa trên chỉ số F1-Score qua 10 lần chạy (folds) và so sánh 5 mẫu gần nhau trong KNN*
 
 ![Model comparison](images/model_performance.png)
 
