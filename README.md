@@ -161,7 +161,7 @@ Bộ dữ liệu bao gồm **23 cột** như sau:
 ### III.3.1 Thuật toán Logistic Regression
 
 **Định nghĩa:**
-Đây là thuật toán học máy có giám sát (Supervised Learning) chuyên dụng cho bài toán phân loại nhị phân (Binary Classification), đưa ra dự đoán dưới dạng xác suất (0 hoặc 1).
+Đây là thuật toán học máy có giám sát (Supervised Learning) có thể được sử dụng cho bài toán phân loại nhị phân (Binary Classification), đưa ra dự đoán dưới dạng xác suất (0 hoặc 1).
 
 **Quy trình xây dựng và tối ưu mô hình:**
 
@@ -169,7 +169,7 @@ Quá trình huấn luyện được thực hiện qua các bước lặp (epochs
 
 **1. Khởi tạo tham số (Initialization)**
 Thiết lập trạng thái ban đầu cho mô hình chưa được huấn luyện:
-* Trọng số $w$ là vector 0 (`np.zeros`) và hệ số chệch $b = 0$.
+* Trọng số $w$ là vector 0 (Cài đặt bằng `np.zeros` trong Numpy) và hệ số chệch $b = 0$.
 
 **2. Quá trình Lan truyền xuôi (Forward Propagation)**
 Tính toán dự đoán xác suất dựa trên dữ liệu đầu vào:
@@ -253,8 +253,6 @@ Thay vì tối ưu hóa hàm mất mát, mô hình "học" bằng cách tính to
   Áp dụng định lý Bayes bằng cách cộng Log-likelihood với Log xác suất tiên nghiệm và chọn lớp có giá trị lớn nhất:
   $$\hat{y} = \text{argmax} \left( \log P(x|c) + \log P(c) \right)$$
 
-Dưới đây là phần tóm tắt ngắn gọn, súc tích nhưng bao hàm đầy đủ các ý tưởng kỹ thuật quan trọng bạn đã cung cấp, được định dạng chuẩn để đưa vào mục III.4 của README:
-
 
 ## III.4 Chiến lược đánh giá & kiểm thử Mô hình
 
@@ -262,29 +260,28 @@ Dưới đây là phần tóm tắt ngắn gọn, súc tích nhưng bao hàm đ�
 
 * **Kỹ thuật K-Fold Cross-Validation**
 Thay vì chỉ chia dữ liệu một lần (Train/Test split truyền thống), ta áp dụng **K-Fold** để giảm thiểu phương sai và đánh giá độ ổn định của mô hình:
-1.  **Xáo trộn (Shuffle):** Đảm bảo tính ngẫu nhiên, phá vỡ thứ tự sắp xếp gốc của dữ liệu.
-2.  **Chia & Xoay vòng:** Dữ liệu được chia thành $k$ phần. Quy trình lặp $k$ lần, mỗi lần chọn một phần làm tập Test (Validation) và phần còn lại làm tập Train.
-3.  **Lợi ích:** Đảm bảo 100% dữ liệu đều được kiểm thử và mô hình không bị "học vẹt" (overfitting) trên một tập mẫu cụ thể.
+  1.  **Xáo trộn (Shuffle):** Đảm bảo tính ngẫu nhiên, phá vỡ thứ tự sắp xếp gốc của dữ liệu.
+  2.  **Chia & Xoay vòng:** Dữ liệu được chia thành $k$ phần. Quy trình lặp $k$ lần, mỗi lần chọn một phần làm tập Test (Validation) và phần còn lại làm tập Train.
 
 * **Quy trình vận hành (`evaluate_models`)**
 Hàm quản lý luồng đánh giá tuân thủ nghiêm ngặt nguyên tắc **chống rò rỉ dữ liệu (Data Leakage Prevention)**:
-* **Bước 1 - Tách dữ liệu:** Tại mỗi vòng lặp K-Fold, dữ liệu được chia thành `Train_fold` và `Test_fold`.
-* **Bước 2 - Xử lý mất cân bằng:** Hàm `oversample_minority` **CHỈ được áp dụng trên `Train_fold`**. Tập `Test_fold` được giữ nguyên bản để phản ánh đúng thực tế.
-* **Bước 3 - Tổng hợp:** Kết quả của $k$ lần chạy được tính trung bình (`np.mean`) để đưa ra con số hiệu năng cuối cùng đáng tin cậy nhất.
+  * **Bước 1 - Tách dữ liệu:** Tại mỗi vòng lặp K-Fold, dữ liệu được chia thành `Train_fold` và `Test_fold`.
+  * **Bước 2 - Xử lý mất cân bằng:** Hàm `oversample_minority` **CHỈ được áp dụng trên `Train_fold`**. Tập `Test_fold` được giữ nguyên bản để phản ánh đúng thực tế.
+  * **Bước 3 - Tổng hợp:** Kết quả của $k$ lần chạy được tính trung bình (`np.mean`) để đưa ra con số hiệu năng cuối cùng đáng tin cậy nhất.
 
 * **Các chỉ số đánh giá (Metrics)**
 Dựa trên **Ma trận nhầm lẫn (Confusion Matrix)** với các yếu tố TP (Dương tính thật), FP (Dương tính giả) và FN (Âm tính giả), hiệu năng mô hình được đo lường qua:
 
-* **Precision (Độ chính xác dự báo dương):** Tỉ lệ dự đoán đúng trong các trường hợp mô hình báo là Positive.
+  * **Precision (Độ chính xác dự báo dương):** Tỉ lệ dự đoán đúng trong các trường hợp mô hình báo là Positive.
     $$P = \frac{TP}{TP + FP}$$
-* **Recall (Độ nhạy):** Khả năng mô hình phát hiện được bao nhiêu % trường hợp Positive thực tế.
+  * **Recall (Độ nhạy):** Khả năng mô hình phát hiện được bao nhiêu % trường hợp Positive thực tế.
     $$R = \frac{TP}{TP + FN}$$
-* **F1-Score:** Trung bình điều hòa giữa Precision và Recall, là chỉ số quan trọng nhất để đánh giá sự cân bằng của mô hình trên dữ liệu lệch.
+  * **F1-Score:** Trung bình điều hòa giữa Precision và Recall, là chỉ số quan trọng nhất để đánh giá sự cân bằng của mô hình trên dữ liệu lệch.
     $$F1 = 2 \times \frac{P \times R}{P + R}$$
 
 # IV. **Installation & Setup**
 
-Để chạy được dự án này, hãy đảm bảo máy tính của bạn đã cài đặt **Python 3.8+** và các thư viện cần thiết.
+Cần đảm bảo máy tính đã cài đặt **Python 3.8+** và các thư viện cần thiết.
 
 **1. Clone dự án:**
 
@@ -383,7 +380,6 @@ CUSTOMER-ANALYSIS/
 │   ├── 02_preprocessing.ipynb          # Xử lý, làm sạch và chuẩn hóa dữ liệu
 │   └── 03_modelling.ipynb              # Xây dựng, huấn luyện và kiểm thử mô hình
 │
-├── HOMEWORK 2_ NUMPY FOR DATA SCI...   # File yêu cầu đề bài
 ├── README.md                           # Tài liệu hướng dẫn dự án
 └── requirements.txt                    # Danh sách các thư viện cần cài đặt
 ```
